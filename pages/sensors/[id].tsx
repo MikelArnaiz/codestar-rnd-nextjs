@@ -47,7 +47,7 @@ export async function getStaticProps({
     }
   }
 
-  const sensorDetailsResponse = await fetch(`http://localhost:3000/api/sensors/${params.id}`)
+  const sensorDetailsResponse = await fetch(`${process.env.API_URL}/api/sensors/${params.id}`)
   const json = await sensorDetailsResponse.json()
 
   return {
