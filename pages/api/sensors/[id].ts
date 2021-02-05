@@ -17,7 +17,7 @@ const handler = nc<NextApiRequest, NextApiResponse>().get(async (req, res) => {
           lat,
           lon,
         },
-        weather: json,
+        weather: json || null,
       },
     })
   } catch (err) {

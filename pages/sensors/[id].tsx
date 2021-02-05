@@ -2,10 +2,7 @@ import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } fro
 import { sensorsList } from '../../data/sensorsList'
 import styled from '@emotion/styled'
 
-type SensorDetailsPageProps = Readonly<{
-  id: string
-  data: unknown
-}> | null
+type SensorDetailsPageProps = Record<string, unknown> | null
 
 export default function SensorDetailsPage(props: SensorDetailsPageProps) {
   if (props === null) {
@@ -48,13 +45,10 @@ export async function getStaticProps({
 
   const { id } = params
   const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
-  const data = await response.json()
+  const result = await response.json()
 
   return {
-    props: {
-      id,
-      data,
-    },
+    props: result?.data || null,
   }
 }
 
