@@ -1,15 +1,12 @@
 import { GetStaticPropsResult } from 'next'
 import { SensorData } from '../../domain/Sensor'
-import { Sensor, createSensorData } from '../../components/Sensor/Sensor'
+import { Sensor } from '../../components/Sensor/Sensor'
 import styled from '@emotion/styled'
+import { sensorsList } from '../../data/sensorsList'
 
 type SensorPageProps = Readonly<{
   sensors: SensorData[]
 }>
-
-const sensors = Array(100)
-  .fill(null)
-  .map((_, index): SensorData => createSensorData(index))
 
 export default function SensorsPage(props: SensorPageProps) {
   const { sensors } = props
@@ -17,7 +14,7 @@ export default function SensorsPage(props: SensorPageProps) {
   return (
     <SensorsContainer>
       {sensors.map((sensor) => (
-        <Sensor {...sensor} />
+        <Sensor {...sensor} key={sensor.id} />
       ))}
     </SensorsContainer>
   )
@@ -26,7 +23,7 @@ export default function SensorsPage(props: SensorPageProps) {
 export function getStaticProps(): GetStaticPropsResult<SensorPageProps> {
   return {
     props: {
-      sensors,
+      sensors: sensorsList,
     },
   }
 }

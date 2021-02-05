@@ -1,39 +1,42 @@
 import styled from '@emotion/styled'
-import Link from 'next/link'
 import { SensorData } from '../../domain/Sensor'
+import { useRouter } from 'next/router'
 
 export type SensorProps = SensorData
 
 export const Sensor = (props: SensorProps) => {
+  const router = useRouter()
+
+  const onClick = () => {
+    router.push(`/sensors/${props.id}`)
+  }
+
   return (
-    <SensorContainer>
-      <SensorTitle href={`/sensors/${props.id}`}>
-        <a>{props.name}</a>
-      </SensorTitle>
+    <SensorContainer onClick={onClick}>
+      <SensorTitle>{props.name}</SensorTitle>
       <SensorValue>{props.value}</SensorValue>
     </SensorContainer>
   )
 }
 
-export function createSensorData(index: number): SensorData {
-  const id = index + 1
-  return {
-    id,
-    name: `Sensor ${id}`,
-    value: (Math.random() * 100).toFixed(2),
-  }
-}
+type SensorContainerProps = Readonly<{
+  onClick: () => void
+}>
 
-const SensorContainer = styled.div`
+const SensorContainer = styled.div<SensorContainerProps>`
   display: flex;
   flex-direction: column;
   padding: 16px;
   gap: 8px;
   background-color: lightblue;
   border-radius: 8px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
-const SensorTitle = styled(Link)`
+const SensorTitle = styled.div`
   font-size: 1.5em;
   display: inline-block;
 `
