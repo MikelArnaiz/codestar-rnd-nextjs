@@ -1,14 +1,14 @@
 import { GetStaticPropsResult } from 'next'
-import { SensorData } from '../../domain/Sensor'
-import { Sensor } from '../../components/Sensor/Sensor'
+import { SensorData } from '../domain/Sensor'
+import { Sensor } from '../components/Sensor/Sensor'
 import styled from '@emotion/styled'
-import { sensorsList } from '../../data/sensorsList'
+import { sensorsList } from '../data/sensorsList'
 
 type SensorPageProps = Readonly<{
   sensors: SensorData[]
 }>
 
-export default function SensorsPage(props: SensorPageProps) {
+export default function MainPage(props: SensorPageProps) {
   const { sensors } = props
 
   return (
