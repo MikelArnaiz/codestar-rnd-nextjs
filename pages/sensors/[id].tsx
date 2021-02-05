@@ -1,6 +1,6 @@
-import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next'
+// import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { useRouter } from 'next/router'
-import { sensorsList } from '../../data/sensorsList'
+// import { sensorsList } from '../../data/sensorsList'
 import styled from '@emotion/styled'
 
 type SensorDetailsPageProps = Readonly<{
@@ -19,43 +19,43 @@ export default function SensorDetailsPage(props: SensorDetailsPageProps) {
   )
 }
 
-type StaticPath = Readonly<{
-  id: string
-}>
+// type StaticPath = Readonly<{
+//   id: string
+// }>
 
-export async function getStaticPaths(): Promise<GetStaticPathsResult<StaticPath>> {
-  const paths = sensorsList.map((sensor) => ({
-    params: {
-      id: sensor.id.toString(), // must match filename param, e.g. [id].tsx
-    },
-  }))
+// export async function getStaticPaths(): Promise<GetStaticPathsResult<StaticPath>> {
+//   const paths = sensorsList.map((sensor) => ({
+//     params: {
+//       id: sensor.id.toString(), // must match filename param, e.g. [id].tsx
+//     },
+//   }))
 
-  return {
-    paths,
-    fallback: false,
-  }
-}
+//   return {
+//     paths,
+//     fallback: false,
+//   }
+// }
 
-export async function getStaticProps({
-  params,
-}: GetStaticPropsContext<StaticPath>): Promise<GetStaticPropsResult<SensorDetailsPageProps>> {
-  if (params === undefined) {
-    return {
-      props: {
-        details: null,
-      },
-    }
-  }
+// export async function getStaticProps({
+//   params,
+// }: GetStaticPropsContext<StaticPath>): Promise<GetStaticPropsResult<SensorDetailsPageProps>> {
+//   if (params === undefined) {
+//     return {
+//       props: {
+//         details: null,
+//       },
+//     }
+//   }
 
-  const sensorDetailsResponse = await fetch(`${process.env.API_URL}/api/sensors/${params.id}`)
-  const json = await sensorDetailsResponse.json()
+//   const sensorDetailsResponse = await fetch(`${process.env.API_URL}/api/sensors/${params.id}`)
+//   const json = await sensorDetailsResponse.json()
 
-  return {
-    props: {
-      details: json,
-    },
-  }
-}
+//   return {
+//     props: {
+//       details: json,
+//     },
+//   }
+// }
 
 const SensorDetailsContainer = styled.div`
   background-color: aliceblue;
