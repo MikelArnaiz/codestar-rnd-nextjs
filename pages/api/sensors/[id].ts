@@ -2,7 +2,18 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'
 import random from 'lodash/random'
 
-const handler = nc<NextApiRequest, NextApiResponse>().get(async (req, res) => {
+export type SensorJSON = Readonly<{
+  data: {
+    id: string | string[]
+    location: {
+      lat: string
+      lon: string
+    }
+    weather: Record<string, unknown> | null
+  } | null
+}>
+
+const handler = nc<NextApiRequest, NextApiResponse<SensorJSON>>().get(async (req, res) => {
   try {
     const { id } = req.query
     const lat = random(-90, 90, true).toFixed(4)

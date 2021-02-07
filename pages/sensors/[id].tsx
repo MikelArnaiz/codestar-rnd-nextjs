@@ -1,6 +1,7 @@
 import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { sensorsList } from '../../data/sensorsList'
 import styled from '@emotion/styled'
+import { SensorJSON } from '../api/sensors/[id]'
 
 type SensorDetailsPageProps = Record<string, unknown> | null
 
@@ -34,6 +35,20 @@ export function getStaticPaths(): GetStaticPathsResult<StaticPath> {
   }
 }
 
+async function getDataWithDelay(id: string) {
+  const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
+  const result = await response.json()
+
+  console.log(`data sensor ${id} ready`)
+
+  return new Promise<SensorJSON>((resolve) => {
+    setTimeout(() => {
+      console.log(`resolve data sensor ${id}`)
+      resolve(result)
+    }, 5000)
+  })
+}
+
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<StaticPath>): Promise<GetStaticPropsResult<SensorDetailsPageProps>> {
@@ -44,8 +59,9 @@ export async function getStaticProps({
   }
 
   const { id } = params
-  const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
-  const result = await response.json()
+  // const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
+  // const result = await response.json()
+  const result = await getDataWithDelay(id)
 
   return {
     props: result?.data || null,
