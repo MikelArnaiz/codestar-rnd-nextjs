@@ -1,21 +1,44 @@
-import { BikeOverviewData } from '../../domain/Bike'
+import { BikeData } from '../../domain/Bike'
+import styled from '@emotion/styled'
 
 type BikeOverviewProps = Readonly<{
-  bike: BikeOverviewData
+  data: BikeData
+  onClick: () => void
 }>
 
-export function BikeOverview({ bike }: BikeOverviewProps) {
+export function BikeOverview(props: BikeOverviewProps) {
   return (
-    <div>
+    <BikeContainer onClick={props.onClick}>
       <div>
-        <strong>Type</strong>: {bike.type} bike
+        <strong>Type</strong>: {props.data.type} bike
       </div>
-      <div>
-        <strong>Battery level</strong>: {bike.batteryLevel}%
-      </div>
-      <div>
-        <strong>Charging</strong>: {bike.isCharging ? 'yes' : 'no'}
-      </div>
-    </div>
+
+      {props.data.batteryLevel === undefined || props.data.isCharging === undefined ? (
+        <span>Loading</span>
+      ) : (
+        <>
+          <div>
+            <strong>Battery level</strong>: {props.data.batteryLevel}%
+          </div>
+
+          <div>
+            <strong>Charging</strong>: {props.data.isCharging ? 'yes' : 'no'}
+          </div>
+        </>
+      )}
+    </BikeContainer>
   )
 }
+
+export const BikeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 8px;
+  background-color: lightblue;
+  border-radius: 8px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`

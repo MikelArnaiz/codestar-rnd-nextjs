@@ -1,32 +1,59 @@
-import { BikeOverviewData } from '../../domain/Bike'
-import { BikeOverview } from '../../components/Bike/Bike'
+import { BikeStaticData, BikeBatteryData } from '../../domain/Bike'
 import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next'
-import { bikesList } from '../../data/bikesList'
+import { bikesStaticDataList } from '../../data/bikesList'
+import { useState, useEffect } from 'react'
 
 type BikePageProps = Readonly<{
-  bike: BikeOverviewData | null
+  bike: BikeStaticData | null
 }>
 
 export default function BikePage(props: BikePageProps) {
+  const [details, setDetails] = useState<BikeBatteryData>()
+
   if (props.bike === null) {
     return <div>No bike data</div>
   }
 
+  useEffect(() => {
+    async function getData() {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bikes/battery`)
+      const json = await response.json()
+
+      setDetails(json)
+    }
+
+    getData()
+  }, [setDetails])
+
   return (
     <div>
-      <BikeOverview bike={props.bike} />
+      <h3>{props.bike.id}</h3>
+      <div>
+        <strong>Type</strong>: {props.bike.type} bike
+      </div>
+
+      {details ? (
+        <>
+          <div>
+            <strong>Battery level</strong>: {details.batteryLevel}%
+          </div>
+          <div>
+            <strong>Charging</strong>: {details.isCharging ? 'yes' : 'no'}
+          </div>
+        </>
+      ) : (
+        <span>Loading details</span>
+      )}
     </div>
   )
 }
 
-// NEXTJS SERVER SIDE PART
-// ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️
 type StaticPathProps = {
   id: string
 }
 
 export function getStaticPaths(): GetStaticPathsResult<StaticPathProps> {
-  const paths = bikesList.map((bike) => ({
+  const paths = bikesStaticDataList.map((bike) => ({
     params: {
       id: bike.id,
     },
@@ -51,7 +78,7 @@ export async function getStaticProps({
     return errorResult
   }
 
-  const bike = bikesList.find((b) => b.id === params.id)
+  const bike = bikesStaticDataList.find((b) => b.id === params.id)
   if (bike === undefined) {
     return errorResult
   }
