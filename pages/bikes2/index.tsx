@@ -1,4 +1,4 @@
-import { GetServerSidePropsResult, GetStaticPropsResult } from 'next'
+import { GetServerSidePropsResult } from 'next'
 import { BikeData } from '../../domain/Bike'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
