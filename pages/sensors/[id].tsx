@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 type SensorDetailsPageProps = Readonly<{
   paths: GetStaticPathsResult<StaticPath>['paths']
   data: Record<string, unknown> | null
+  error: string | null
 }>
 
 export default function SensorDetailsPage(props: SensorDetailsPageProps) {
@@ -25,7 +26,11 @@ export default function SensorDetailsPage(props: SensorDetailsPageProps) {
   }
 
   if (props === null) {
-    return <p>Error</p>
+    return <p>no props!</p>
+  }
+
+  if (!!props.error) {
+    return <p>Error: {props.error}</p>
   }
 
   return (
@@ -53,18 +58,25 @@ export function getStaticPaths(): GetStaticPathsResult<StaticPath> {
   }
 }
 
-async function getDataWithDelay(id: string) {
-  const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
-  const result = await response.json()
+async function getDataFromAPI(id: string) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/sensors/${id}`)
+    const result = (await response.json()) as SensorJSON
 
-  console.log(`data sensor ${id} ready`)
+    if (!result?.data) {
+      throw new Error('no data')
+    }
 
-  return new Promise<SensorJSON>((resolve) => {
-    setTimeout(() => {
-      console.log(`resolve data sensor ${id}`)
-      resolve(result)
-    }, 1000)
-  })
+    return {
+      error: null,
+      data: result.data,
+    }
+  } catch (err) {
+    return Promise.resolve({
+      error: err.message,
+      data: null,
+    })
+  }
 }
 
 export async function getStaticProps({
@@ -75,16 +87,18 @@ export async function getStaticProps({
       props: {
         paths,
         data: null,
+        error: 'no param id',
       },
     }
   }
 
-  const { data } = await getDataWithDelay(params.id)
+  const { data, error } = await getDataFromAPI(params.id)
 
   return {
     props: {
       paths,
       data,
+      error,
     },
   }
 }
