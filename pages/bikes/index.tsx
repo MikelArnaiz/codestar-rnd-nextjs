@@ -5,7 +5,8 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { BikesPageContainer } from '../../components/Bike/BikesPage'
 import { useState, useEffect } from 'react'
-import { BikeOverview } from '../../components/Bike/Bike'
+import { BikeOverview } from '../../components/Bike/BikeOverview'
+import { bikesEndpoint } from '../../constants/endpoints'
 
 type BikesPageProps = Readonly<{
   data: BikeData[]
@@ -17,7 +18,7 @@ export default function BikesPage(props: BikesPageProps) {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bikes`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${bikesEndpoint}`)
       const json = await response.json()
 
       setBikesDataList(json)
@@ -32,6 +33,7 @@ export default function BikesPage(props: BikesPageProps) {
 
   return (
     <BikesPageContainer>
+      <h3>StaticPaths + StaticProps</h3>
       <ListContainer>
         {bikes.map((bike) => (
           <BikeOverview data={bike} onClick={onClick(bike.id)} key={bike.id} />

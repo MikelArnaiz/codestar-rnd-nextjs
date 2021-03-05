@@ -1,44 +1,33 @@
 import { BikeData } from '../../domain/Bike'
-import styled from '@emotion/styled'
 
-type BikeOverviewProps = Readonly<{
-  data: BikeData
-  onClick: () => void
+type BikeProps = Readonly<{
+  bike: BikeData | null
 }>
 
-export function BikeOverview(props: BikeOverviewProps) {
+export function Bike({ bike }: BikeProps) {
+  if (bike === null) {
+    return <div>No bike data</div>
+  }
+
   return (
-    <BikeContainer onClick={props.onClick}>
+    <div>
+      <h3>{bike.id}</h3>
       <div>
-        <strong>Type</strong>: {props.data.type} bike
+        <strong>Type</strong>: {bike.type} bike
       </div>
 
-      {props.data.batteryLevel === undefined || props.data.isCharging === undefined ? (
-        <span>Loading</span>
-      ) : (
+      {bike.batteryLevel !== undefined && bike.isCharging !== undefined ? (
         <>
           <div>
-            <strong>Battery level</strong>: {props.data.batteryLevel}%
+            <strong>Battery level</strong>: {bike.batteryLevel}%
           </div>
-
           <div>
-            <strong>Charging</strong>: {props.data.isCharging ? 'yes' : 'no'}
+            <strong>Charging</strong>: {bike.isCharging ? 'yes' : 'no'}
           </div>
         </>
+      ) : (
+        <span>Loading details</span>
       )}
-    </BikeContainer>
+    </div>
   )
 }
-
-export const BikeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  gap: 8px;
-  background-color: lightblue;
-  border-radius: 8px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`

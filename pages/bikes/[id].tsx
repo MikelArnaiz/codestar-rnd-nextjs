@@ -2,6 +2,8 @@ import { BikeStaticData, BikeBatteryData } from '../../domain/Bike'
 import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { bikesStaticDataList } from '../../data/bikesList'
 import { useState, useEffect } from 'react'
+import { Bike } from '../../components/Bike/Bike'
+import { batteryEndpoint } from '../../constants/endpoints'
 
 type BikePageProps = Readonly<{
   bike: BikeStaticData | null
@@ -10,13 +12,9 @@ type BikePageProps = Readonly<{
 export default function BikePage(props: BikePageProps) {
   const [details, setDetails] = useState<BikeBatteryData>()
 
-  if (props.bike === null) {
-    return <div>No bike data</div>
-  }
-
   useEffect(() => {
     async function getData() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bikes/battery`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${batteryEndpoint}`)
       const json = await response.json()
 
       setDetails(json)
@@ -25,26 +23,19 @@ export default function BikePage(props: BikePageProps) {
     getData()
   }, [setDetails])
 
-  return (
-    <div>
-      <h3>{props.bike.id}</h3>
-      <div>
-        <strong>Type</strong>: {props.bike.type} bike
-      </div>
+  const bike =
+    props.bike === null
+      ? null
+      : {
+          ...props.bike,
+          ...details,
+        }
 
-      {details ? (
-        <>
-          <div>
-            <strong>Battery level</strong>: {details.batteryLevel}%
-          </div>
-          <div>
-            <strong>Charging</strong>: {details.isCharging ? 'yes' : 'no'}
-          </div>
-        </>
-      ) : (
-        <span>Loading details</span>
-      )}
-    </div>
+  return (
+    <>
+      <h3>StaticPaths + StaticProps</h3>
+      <Bike bike={bike} />
+    </>
   )
 }
 
