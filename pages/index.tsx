@@ -13,15 +13,16 @@ export default function MainPage(props: SensorPageProps) {
   const { sensors } = props
 
   return (
-    <SensorsContainer>
+    <MainPageContainer>
       <Link href="/bikes">
         <a>Bikes</a>
       </Link>
-
-      {sensors.map((sensor) => (
-        <Sensor {...sensor} key={sensor.id} />
-      ))}
-    </SensorsContainer>
+      <SensorsContainer>
+        {sensors.map((sensor) => (
+          <Sensor {...sensor} key={sensor.id} />
+        ))}
+      </SensorsContainer>
+    </MainPageContainer>
   )
 }
 
@@ -33,12 +34,18 @@ export function getStaticProps(): GetStaticPropsResult<SensorPageProps> {
   }
 }
 
+const MainPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  max-width: 800px;
+  margin: 0 auto;
+  justify-content: center;
+`
+
 const SensorsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
   gap: 16px;
-  max-width: 800px;
-  margin: 0 auto;
-  justify-content: center;
 `

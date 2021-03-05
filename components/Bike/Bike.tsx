@@ -8,9 +8,6 @@ export function BikeOverview({ bike }: BikeOverviewProps) {
   return (
     <ul>
       <li>
-        <strong>Id</strong>: {bike.id}
-      </li>
-      <li>
         <strong>Type</strong>: {bike.type} bike
       </li>
       <li>
