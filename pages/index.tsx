@@ -3,6 +3,7 @@ import { SensorData } from '../domain/Sensor'
 import { Sensor } from '../components/Sensor/Sensor'
 import styled from '@emotion/styled'
 import { sensorsList } from '../data/sensorsList'
+import Link from 'next/link'
 
 type SensorPageProps = Readonly<{
   sensors: SensorData[]
@@ -13,6 +14,10 @@ export default function MainPage(props: SensorPageProps) {
 
   return (
     <SensorsContainer>
+      <Link href="/bikes">
+        <a>Bikes</a>
+      </Link>
+
       {sensors.map((sensor) => (
         <Sensor {...sensor} key={sensor.id} />
       ))}
