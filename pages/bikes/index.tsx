@@ -33,7 +33,7 @@ export default function BikesPage(props: BikesPageProps) {
 
   return (
     <BikesPageContainer>
-      <h3>StaticPaths + StaticProps</h3>
+      <h3>client side fetch + StaticPaths + StaticProps</h3>
       <ListContainer>
         {bikes.map((bike) => (
           <BikeOverview data={bike} onClick={onClick(bike.id)} key={bike.id} />

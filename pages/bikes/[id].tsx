@@ -33,7 +33,7 @@ export default function BikePage(props: BikePageProps) {
 
   return (
     <>
-      <h3>StaticPaths + StaticProps</h3>
+      <h3>client side fetch + StaticPaths + StaticProps</h3>
       <Bike bike={bike} />
     </>
   )
