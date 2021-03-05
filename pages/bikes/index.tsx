@@ -13,15 +13,19 @@ type BikesPageProps = Readonly<{
 }>
 
 export default function BikesPage(props: BikesPageProps) {
+  const [error, setError] = useState<string>()
   const [bikes, setBikesDataList] = useState<BikeData[]>(props.data)
   const router = useRouter()
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${bikesEndpoint}`)
-      const json = await response.json()
-
-      setBikesDataList(json)
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${bikesEndpoint}`)
+        const json = await response.json()
+        setBikesDataList(json)
+      } catch (err) {
+        setError(err.message)
+      }
     }
 
     getData()
@@ -29,6 +33,15 @@ export default function BikesPage(props: BikesPageProps) {
 
   const onClick = (id: string) => () => {
     router.push(`/bikes/${id}`)
+  }
+
+  if (!bikes || !bikes.length || error) {
+    return (
+      <div>
+        Error.
+        {error ? <p>{error}.</p> : null}
+      </div>
+    )
   }
 
   return (

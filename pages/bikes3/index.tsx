@@ -7,7 +7,8 @@ import { GetStaticPropsResult } from 'next'
 import { bikesEndpoint } from '../../constants/endpoints'
 
 type Bikes3PageProps = Readonly<{
-  data: BikeData[]
+  data: BikeData[] | null
+  error: string | null
 }>
 
 export default function Bikes3Page(props: Bikes3PageProps) {
@@ -15,6 +16,15 @@ export default function Bikes3Page(props: Bikes3PageProps) {
 
   const onClick = (id: string) => () => {
     router.push(`/bikes3/${id}`)
+  }
+
+  if (!props.data || !props.data.length || props.error) {
+    return (
+      <div>
+        Error.
+        {props.error ? <p>{props.error}.</p> : null}
+      </div>
+    )
   }
 
   return (
@@ -30,13 +40,23 @@ export default function Bikes3Page(props: Bikes3PageProps) {
 }
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<Bikes3PageProps>> {
-  const response = await fetch(`${process.env.API_URL}${bikesEndpoint}`)
-  const bikes = (await response.json()) as BikeData[]
+  try {
+    const response = await fetch(`${process.env.API_URL}${bikesEndpoint}`)
+    const bikes = (await response.json()) as BikeData[]
 
-  return {
-    props: {
-      data: bikes,
-    },
+    return {
+      props: {
+        data: bikes,
+        error: null,
+      },
+    }
+  } catch (err) {
+    return {
+      props: {
+        data: null,
+        error: err.message,
+      },
+    }
   }
 }
 
