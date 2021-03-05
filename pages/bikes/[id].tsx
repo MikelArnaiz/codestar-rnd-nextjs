@@ -14,7 +14,6 @@ export default function BikePage(props: BikePageProps) {
 
   return (
     <div>
-      <h3>{props.bike.id}</h3>
       <BikeOverview bike={props.bike} />
     </div>
   )

@@ -1,49 +1,44 @@
 import { GetStaticPropsResult } from 'next'
-import { SensorData } from '../domain/Sensor'
-import { Sensor } from '../components/Sensor/Sensor'
+import { BikeOverviewData } from '../domain/Bike'
+import { bikesList } from '../data/bikesList'
 import styled from '@emotion/styled'
-import { sensorsList } from '../data/sensorsList'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { BikeOverview } from '../components/Bike/Bike'
+import { BikesPageContainer, BikeContainer } from '../components/Bike/BikesPage'
 
-type SensorPageProps = Readonly<{
-  sensors: SensorData[]
+type BikesPageProps = Readonly<{
+  bikesList: BikeOverviewData[]
 }>
 
-export default function MainPage(props: SensorPageProps) {
-  const { sensors } = props
+export default function BikesPage(props: BikesPageProps) {
+  const router = useRouter()
+
+  const onClick = (id: string) => () => {
+    router.push(`/bikes/${id}`)
+  }
 
   return (
-    <MainPageContainer>
-      <Link href="/bikes">
-        <a>Bikes</a>
-      </Link>
-      <SensorsContainer>
-        {sensors.map((sensor) => (
-          <Sensor {...sensor} key={sensor.id} />
+    <BikesPageContainer>
+      <ListContainer>
+        {props.bikesList.map((bike) => (
+          <BikeContainer onClick={onClick(bike.id)}>
+            <BikeOverview bike={bike} />
+          </BikeContainer>
         ))}
-      </SensorsContainer>
-    </MainPageContainer>
+      </ListContainer>
+    </BikesPageContainer>
   )
 }
 
-export function getStaticProps(): GetStaticPropsResult<SensorPageProps> {
+export function getStaticProps(): GetStaticPropsResult<BikesPageProps> {
   return {
     props: {
-      sensors: sensorsList,
+      bikesList: bikesList,
     },
   }
 }
 
-const MainPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  max-width: 800px;
-  margin: 0 auto;
-  justify-content: center;
-`
-
-const SensorsContainer = styled.div`
+const ListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 16px;

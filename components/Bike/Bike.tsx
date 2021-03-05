@@ -6,16 +6,16 @@ type BikeOverviewProps = Readonly<{
 
 export function BikeOverview({ bike }: BikeOverviewProps) {
   return (
-    <ul>
-      <li>
+    <div>
+      <div>
         <strong>Type</strong>: {bike.type} bike
-      </li>
-      <li>
+      </div>
+      <div>
         <strong>Battery level</strong>: {bike.batteryLevel}%
-      </li>
-      <li>
+      </div>
+      <div>
         <strong>Charging</strong>: {bike.isCharging ? 'yes' : 'no'}
-      </li>
-    </ul>
+      </div>
+    </div>
   )
 }
