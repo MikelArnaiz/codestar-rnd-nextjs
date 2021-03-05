@@ -63,7 +63,7 @@ async function getDataWithDelay(id: string) {
     setTimeout(() => {
       console.log(`resolve data sensor ${id}`)
       resolve(result)
-    }, 500)
+    }, 1000)
   })
 }
 
