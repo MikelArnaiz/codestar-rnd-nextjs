@@ -11,7 +11,7 @@ type Bike3PageProps = Readonly<{
 export default function Bike3Page(props: Bike3PageProps) {
   return (
     <>
-      <h3>pure static; StaticPaths + StaticProps</h3>
+      <h3>StaticPaths + StaticProps</h3>
       <Bike bike={props.bike} />
     </>
   )

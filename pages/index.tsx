@@ -7,7 +7,9 @@ export default function MainPage() {
       <br />
       <Link href="/bikes2">Bikes2 (server side props)</Link>
       <br />
-      <Link href="/bikes3">Bikes3 (static)</Link>
+      <Link href="/bikes3">Bikes3 (StaticPaths + StaticProps)</Link>
+      <br />
+      <Link href="/bikes3">Bikes4 (static)</Link>
     </div>
   )
 }

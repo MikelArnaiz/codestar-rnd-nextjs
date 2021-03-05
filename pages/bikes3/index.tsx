@@ -19,7 +19,7 @@ export default function Bikes3Page(props: Bikes3PageProps) {
 
   return (
     <BikesPageContainer>
-      <h3>pure static; StaticPaths + StaticProps</h3>
+      <h3>StaticPaths + StaticProps</h3>
       <ListContainer>
         {props.data.map((bike) => (
           <BikeOverview data={bike} onClick={onClick(bike.id)} key={bike.id} />

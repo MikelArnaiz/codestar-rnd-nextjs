@@ -1,4 +1,5 @@
-import { BikeStaticData, BIKE_TYPE_CARGO, BIKE_TYPE_CITY, BIKE_TYPE_SPORT } from '../domain/Bike'
+import { BikeStaticData, BIKE_TYPE_CARGO, BIKE_TYPE_CITY, BIKE_TYPE_SPORT, BikeData } from '../domain/Bike'
+import { createBikesDataList } from './createBikesDataList'
 
 export const bikesStaticDataList: BikeStaticData[] = [
   {
@@ -38,3 +39,5 @@ export const bikesStaticDataList: BikeStaticData[] = [
     type: BIKE_TYPE_CARGO,
   },
 ]
+
+export const bikesDataList: BikeData[] = createBikesDataList()
